@@ -1,3 +1,15 @@
+## Copyright (C) 2018 Zhou Lan (zlan@ncsu.edu) - All Rights Reserved
+## You may use, distribute and modify this code under the
+## * terms of the  GPL-2. GPL-3, 
+## *
+## * You should have received a copy of the GPL-2. GPL-3 license with
+## * this file. If not, please write to: zlan@ncsu.edu, or visit: https://www4.stat.ncsu.edu/~zlan/Publication.html
+## */
+
+
+
+
+
 library(rlang)
 library('igraph')
 library("bayess")
