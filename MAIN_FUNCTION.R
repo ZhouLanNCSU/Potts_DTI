@@ -896,15 +896,15 @@ Potts_Bayesian_Semi_Multi<-function(Data,net,n,p=3,N,
     
     for (jj in 1:3){
     
-    u <- rnorm(3)*10^(-10)
+    u <- rnorm(3)*0.1
     theta_prop <- log(c(rho_alpha,rho_beta,rho_xi)) + S %*% u
     
     
+    ind=sample(c(1,2,3),1)
     
-    
-    rho_alpha_can<-exp(theta_prop[1])
-    rho_beta_can<-exp(theta_prop[2])
-    rho_xi_can<-exp(theta_prop[3])
+    rho_alpha_can<-ifelse(ind==1,exp(theta_prop[1]),rho_alpha)
+    rho_beta_can<-ifelse(ind==2,exp(theta_prop[2]),rho_beta)
+    rho_xi_can<-ifelse(ind==3,exp(theta_prop[3]),rho_xi)
     
     
     if(
@@ -1145,7 +1145,7 @@ Potts_Bayesian_Semi_Multi<-function(Data,net,n,p=3,N,
     #Bookkeeping$dof_iw[[it]]<-dof_iw
     #Bookkeeping$dof_w[[it]]<-dof_w
     Diff_all[it,]<-Diff
-    rho_all[it,]<-c(rho_alpha,rho_beta,rho_xi)
+    rho_all[it,]<-c(rho_alpha,rho_beta,rho_xi)+rnorm(3,0,0.001)
     
     
     

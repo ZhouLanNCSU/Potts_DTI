@@ -26,8 +26,8 @@ c=40
   label_T0[(cc+1):(cc*2),]<-2
   label_T0[(cc*2+1):(cc*3),]<-3
   label_T0[(cc*3+1):c,]<-4
-  Matrix_list=lapply(1:K, function(k) rwish(30, (k+1)*diag(3)/30))
-  Matrix_list[[K]]<-rwish(5, 1.5*diag(3)/30)
+  Matrix_list=lapply(1:K, function(k) rwish(5, (k+1)*diag(3)/5))
+  Matrix_list[[K]]<-rwish(5, 1.5*diag(3)/5)
   label_T1[1:cc,]<-1
   label_T1[(cc+1):(cc*2),]<-2
   label_T1[(cc*2+1):(cc*3),]<-3
@@ -41,15 +41,14 @@ c=40
   N_T1=5
   T_index=c(rep(1,N_T0),rep(2,N_T1))
   
-  Data_T0<-lapply(1:N_T0, function(i) lapply(1:c^2,function(s) riwish(5,3*Matrix_list[[label_T0[s]]])))
-  Data_T1<-lapply(1:N_T1, function(i) lapply(1:c^2,function(s) riwish(5,3*Matrix_list[[label_T1[s]]])))
+  Data_T0<-lapply(1:N_T0, function(i) lapply(1:c^2,function(s) riwish(5,Matrix_list[[label_T0[s]]])))
+  Data_T1<-lapply(1:N_T1, function(i) lapply(1:c^2,function(s) riwish(5,Matrix_list[[label_T1[s]]])))
   Data<-append(Data_T0,Data_T1)
   par(mfrow=c(1,2))
   image(label_T0)
   image(label_T1)
   
-  iter=5000
-  burnin=3000
+  
   p=3
   n=c^2
   K=10
@@ -65,14 +64,24 @@ c=40
 ```
 
 #### Codes implementation
-```{r}
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
 result<-Potts_Bayesian_Semi_Multi(Data,net,n,p=3,N,
-                                        K=50,T_index,iter=5000,
+                                        K=50,T_index,iter=500,
                                         LU_alpha=c(0,20), 
                                         LU_beta=c(0,20), 
                                         LU_xi=c(0,1),
                                         rho_alpha=1,
-                                        rho_beta=1,
-                                        rho_xi=0)
+                                        rho_beta=4,
+                                        rho_xi=0.1)
 ```
+
+#### Posterior Mean of $mathcal{I}(h_{0v}\not=h_{1v})$
+```{r}
+
+```
+
+
+
+
+
 
