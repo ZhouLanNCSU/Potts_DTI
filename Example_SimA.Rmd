@@ -26,8 +26,8 @@ c=40
   label_T0[(cc+1):(cc*2),]<-2
   label_T0[(cc*2+1):(cc*3),]<-3
   label_T0[(cc*3+1):c,]<-4
-  Matrix_list=lapply(1:K, function(k) rwish(5, (k+1)*diag(3)/5))
-  Matrix_list[[K]]<-rwish(5, 1.5*diag(3)/5)
+  Matrix_list=lapply(1:K, function(k) rwish(3, (k+1)*diag(3)/3))
+  Matrix_list[[K]]<-rwish(3, 1.5*diag(3)/5)
   label_T1[1:cc,]<-1
   label_T1[(cc+1):(cc*2),]<-2
   label_T1[(cc*2+1):(cc*3),]<-3
@@ -66,7 +66,7 @@ c=40
 #### Codes implementation
 ```{r message=FALSE, warning=FALSE, paged.print=FALSE}
 result<-Potts_Bayesian_Semi_Multi(Data,net,n,p=3,N,
-                                        K=10,T_index,iter=5000,
+                                        K=10,T_index,iter=8000,
                                         LU_alpha=c(0,20), 
                                         LU_beta=c(0,20), 
                                         LU_xi=c(0,1),
@@ -77,9 +77,10 @@ result<-Potts_Bayesian_Semi_Multi(Data,net,n,p=3,N,
 
 #### Posterior Mean of $mathcal{I}(h_{0v}\not=h_{1v})$
 ```{r}
-
+image(matrix(colMeans(result$Diff[3000:8000,]),40,40))
 ```
 
+#### TPR FPR FDR
 
 
 
