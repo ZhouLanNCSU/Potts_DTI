@@ -905,12 +905,14 @@ Potts_Bayesian_Semi_Multi<-function(Data,net,n,p=3,N,
     theta_prop <- log(c(rho_alpha,rho_beta,rho_xi)) + S %*% u
     
     
+    
+    
     rho_alpha_can<-exp(theta_prop[1])
     rho_beta_can<-exp(theta_prop[2])
     rho_xi_can<-exp(theta_prop[3])
     
     
-    if(rho_alpha_can>rho_beta_can &
+    if(
       LU_alpha[1]<rho_alpha_can & rho_alpha_can<LU_alpha[2] &
        LU_beta[1]<rho_beta_can & rho_beta_can<LU_beta[2] &
        LU_xi[1]<rho_xi_can & rho_xi_can<LU_xi[2]){
@@ -1124,11 +1126,6 @@ Potts_Bayesian_Semi_Multi<-function(Data,net,n,p=3,N,
         rho_beta=rho_beta_can
         rho_xi=rho_xi_can
         eta_k=eta_k_can
-      }else{
-        rho_alpha=rho_alpha+rnorm(1)*10^(-10)
-        rho_beta=rho_beta+rnorm(1)*10^(-10)
-        rho_xi=rho_xi+rnorm(1)*10^(-10)
-        eta_k=eta_k+rnorm(1)*10^(-10)
       }
       
       
