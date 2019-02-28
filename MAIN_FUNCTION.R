@@ -1145,7 +1145,7 @@ Potts_Bayesian_Semi_Multi<-function(Data,net,n,p=3,N,
     #Bookkeeping$dof_iw[[it]]<-dof_iw
     #Bookkeeping$dof_w[[it]]<-dof_w
     Diff_all[it,]<-Diff
-    rho_all[it,]<-c(rho_alpha,rho_beta,rho_xi)+rnorm(3,0,0.001)
+    rho_all[it,]<-c(rho_alpha,rho_beta,rho_xi)+rnorm(3,0,0.0001)
     
     
     
