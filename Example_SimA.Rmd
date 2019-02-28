@@ -4,9 +4,9 @@ output: html_notebook
 ---
 
 #### Load functions
-```{r message=FALSE, warning=FALSE, paged.print=FALSE}
-gc()
-source("MAIN_FUNCTION.R")
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+gc(verbose=FALSE)
+source("MAIN_FUNCTION.R",verbose=FALSE)
 ```
 
 #### Data Generation from a mixture model (See Section 3 and Table 1(a))
@@ -21,7 +21,7 @@ c=40
   label_T0<-pottshm(ncol=K,niter=1,c,m=c,beta=rho)
   label_T1<-pottshm(ncol=K,niter=1,c,m=c,beta=rho)
   cc=c/4
-  
+  #####Partion the image
   label_T0[1:cc,]<-1
   label_T0[(cc+1):(cc*2),]<-2
   label_T0[(cc*2+1):(cc*3),]<-3
@@ -32,7 +32,7 @@ c=40
   label_T1[(cc+1):(cc*2),]<-2
   label_T1[(cc*2+1):(cc*3),]<-3
   label_T1[(cc*3+1):c,]<-4
-  
+  #####Indicate the reg
   label_T1[(cc+1):(cc*2),(cc+1):(cc*2)]<-5
   
   
@@ -66,12 +66,12 @@ c=40
 #### Codes implementation
 ```{r message=FALSE, warning=FALSE, paged.print=FALSE}
 result<-Potts_Bayesian_Semi_Multi(Data,net,n,p=3,N,
-                                        K=50,T_index,iter=500,
+                                        K=10,T_index,iter=5000,
                                         LU_alpha=c(0,20), 
                                         LU_beta=c(0,20), 
                                         LU_xi=c(0,1),
                                         rho_alpha=1,
-                                        rho_beta=4,
+                                        rho_beta=2,
                                         rho_xi=0.1)
 ```
 
