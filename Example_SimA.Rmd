@@ -28,8 +28,8 @@ c=40
   label_T0[(cc+1):(cc*2),]<-2
   label_T0[(cc*2+1):(cc*3),]<-3
   label_T0[(cc*3+1):c,]<-4
-  Matrix_list=lapply(1:K, function(k) rwish(3, (k+1)*diag(3)/3))
-  Matrix_list[[K]]<-rwish(3, 1.5*diag(3)/5)
+  Matrix_list=lapply(1:K, function(k) rwish(30, (k+1)*diag(3)/30))
+  Matrix_list[[K]]<-rwish(30, 1.5*diag(3)/50)
   label_T1[1:cc,]<-1
   label_T1[(cc+1):(cc*2),]<-2
   label_T1[(cc*2+1):(cc*3),]<-3
@@ -72,18 +72,18 @@ result<-Potts_Bayesian_Semi_Multi(Data,net,n,p=3,N,
                                         LU_alpha=c(0,20), 
                                         LU_beta=c(0,20), 
                                         LU_xi=c(0,1),
-                                        rho_alpha=1,
-                                        rho_beta=5,
+                                        rho_alpha=2,
+                                        rho_beta=4,
                                         rho_xi=0.1)
 ```
 
 #### Posterior Mean of $mathcal{I}(h_{0v}\not=h_{1v})$
 ```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
-dd=cbind((1*t(matrix(colMeans(result$Diff[100:500,])>0.5,40,40)))[,3:40],rep(0,40),rep(0,40))
+dd=cbind((1*t(matrix(colMeans(result$Diff[101:500,])>0.5,40,40)))[,3:40],rep(0,40),rep(0,40))
 ```
 
 ```{r}
-image(matrix(colMeans(result$Diff[100:500,]),40,40))
+image(matrix(colMeans(result$Diff[101:500,]),40,40))
 ```
 
 #### TPR FPR FDR
@@ -99,5 +99,8 @@ cat("FDR is",mean(dd[which(label_T1!=5)])*(1-0.0625) +0.0625*(1-mean(dd[which(la
 
 
 
+```{r}
+
+```
 
 

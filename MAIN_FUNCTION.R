@@ -1107,7 +1107,7 @@ Potts_Bayesian_Semi_Multi<-function(Data,net,n,p=3,N,
       
       
       
-      if(mean(Diff_temp)>0.3){
+      if(mean(Diff_temp)>0.2){
         Accept=0
         prob=0
       }
