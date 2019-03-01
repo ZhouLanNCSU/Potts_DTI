@@ -1,0 +1,151 @@
+---
+title: "Example Script Simulation (b)"
+output:
+  html_document:
+    df_print: paged
+---
+
+#### Load functions
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+gc(verbose=FALSE)
+source("MAIN_FUNCTION.R",verbose=FALSE)
+```
+
+#### Data Generation from a mixture model (See Section 3 and Table 1(b))
+```{r}
+correlation=2
+
+c=40
+g_full <- graph.lattice(length=c,dim=2)
+n=c^2
+#V(g_full)$index=1:n
+net=get.adjacency(g_full,attr=NULL)
+K=5
+rho=5
+label_T0<-pottshm(ncol=K,niter=1,c,m=c,beta=rho)
+label_T1<-pottshm(ncol=K,niter=1,c,m=c,beta=rho)
+cc=c/4
+lower=0.25
+label_T0[1:cc,]<-1
+label_T0[(cc+1):(cc*2),]<-1
+label_T0[(cc*2+1):(cc*3),]<-1
+label_T0[(cc*3+1):c,]<-1
+
+label_T1[1:cc,]<-1
+label_T1[(cc+1):(cc*2),]<-1
+label_T1[(cc*2+1):(cc*3),]<-1
+label_T1[(cc*3+1):c,]<-1
+label_T1[(cc+1):(cc*2),(cc+1):(cc*2)]<-2
+
+
+Data=list()
+N_T0=10
+N_T1=10
+T_index=c(rep(1,N_T0),rep(2,N_T1))
+N=N_T0+N_T1
+
+dd=mesh (1:c,1:c)
+dat=cbind(as.vector(dd$x),as.vector(dd$y))
+d <- dist(dat)
+net.graph <- graph.lattice(c(40, 40))
+net=get.adjacency(net.graph)
+cov=varcov.spatial(coords = dat,cov.model = "exponential",cov.pars=c(1,correlation))$`varcov`
+par(mfrow=c(1,2))
+plot(g_full,vertex.label=NA, vertex.size=5,vertex.color=as.vector(label_T0),layout = layout.kamada.kawai)
+plot(g_full,vertex.label=NA, vertex.size=5,vertex.color=as.vector(label_T1),layout = layout.kamada.kawai)
+
+
+
+Data=lapply(1:N, function(i) NULL)
+
+MU_kk=rep(0,1600)
+MU_kk[which(label_T1==2)]=0.25
+MU_kl=rep(0,1600)
+MU_kl[which(label_T1==2)]=0.25
+
+
+
+construction<-function(v){
+  
+  L=matrix(0,3,3)
+  
+  L[1,1]=U11[v]
+  L[2,2]=U22[v]
+  L[3,3]=U33[v]
+  L[2,1]=U21[v]
+  L[3,1]=U31[v]
+  L[3,2]=U32[v]
+  
+  L%*%t(L)
+}
+
+for (sub in 1:N){
+  
+  if(sub>N/2){
+    ind=0
+  }else{ind=1}
+   U11=exp(rmvn(1,rep(0,1600),cov*0.1)+MU_kk*ind)
+   U22=exp(rmvn(1,rep(0,1600),cov*0.1)+MU_kk*ind)
+   U33=exp(rmvn(1,rep(0,1600),cov*0.1)+MU_kk*ind)
+   U21=rmvn(1,rep(0,1600),cov*0.1)+MU_kl*ind
+   U31=rmvn(1,rep(0,1600),cov*0.1)+MU_kl*ind
+   U32=rmvn(1,rep(0,1600),cov*0.1)+MU_kl*ind
+
+   Data[[sub]]<-lapply(1:1600, function(v) construction(v))
+
+  
+}
+
+
+iter=5000
+burnin=3000
+p=3
+n=c^2
+K=10
+N=N_T0+N_T1
+no.T=2
+Ca=3
+Cb=3
+adj_list<- apply(net==1,1,which)
+S=diag(2)*0.1
+rho_alpha=0.3
+rho_beta=2
+  
+```
+
+#### Codes implementation
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+result<-Potts_Bayesian_Semi_Multi(Data,net,n,p=3,N,
+                                        K=10,T_index,iter=500,
+                                        LU_alpha=c(0,20), 
+                                        LU_beta=c(0,20), 
+                                        LU_xi=c(0,1),
+                                        rho_alpha=1,
+                                        rho_beta=5,
+                                        rho_xi=0.1)
+```
+
+#### Posterior Mean of $mathcal{I}(h_{0v}\not=h_{1v})$
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+dd=cbind((1*t(matrix(colMeans(result$Diff[100:500,])>0.5,40,40)))[,3:40],rep(0,40),rep(0,40))
+```
+
+```{r}
+image(matrix(colMeans(result$Diff[100:500,]),40,40))
+```
+
+#### TPR FPR FDR
+```{r}
+
+
+cat("TPR is",mean(dd[which(label_T1==5)]),"\n")
+cat("FPR is",mean(dd[which(label_T1!=5)]),"\n")
+cat("FDR is",mean(dd[which(label_T1!=5)])*(1-0.0625) +0.0625*(1-mean(dd[which(label_T1==5)])),"\n")
+
+
+```
+
+
+
+
+

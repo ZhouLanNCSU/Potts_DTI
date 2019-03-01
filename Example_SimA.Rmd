@@ -68,7 +68,7 @@ c=40
 #### Codes implementation
 ```{r message=FALSE, warning=FALSE, paged.print=FALSE}
 result<-Potts_Bayesian_Semi_Multi(Data,net,n,p=3,N,
-                                        K=10,T_index,iter=8000,
+                                        K=10,T_index,iter=500,
                                         LU_alpha=c(0,20), 
                                         LU_beta=c(0,20), 
                                         LU_xi=c(0,1),
@@ -79,11 +79,11 @@ result<-Potts_Bayesian_Semi_Multi(Data,net,n,p=3,N,
 
 #### Posterior Mean of $mathcal{I}(h_{0v}\not=h_{1v})$
 ```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
-dd=cbind((1*t(matrix(colMeans(result$Diff[3001:8000,])>0.5,40,40)))[,3:40],rep(0,40),rep(0,40))
+dd=cbind((1*t(matrix(colMeans(result$Diff[100:500,])>0.5,40,40)))[,3:40],rep(0,40),rep(0,40))
 ```
 
 ```{r}
-image(matrix(colMeans(result$Diff[3001:8000,]),40,40))
+image(matrix(colMeans(result$Diff[100:500,]),40,40))
 ```
 
 #### TPR FPR FDR
