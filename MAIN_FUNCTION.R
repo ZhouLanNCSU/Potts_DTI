@@ -1107,7 +1107,7 @@ Potts_Bayesian_Semi_Multi<-function(Data,net,n,p=3,N,
       
       
       
-      if(mean(Diff_temp)>0.2){
+      if(mean(Diff_temp)>0.3){
         Accept=0
         prob=0
       }
@@ -1144,7 +1144,7 @@ Potts_Bayesian_Semi_Multi<-function(Data,net,n,p=3,N,
     #Bookkeeping$Matrix_list[[it]]<-Matrix_list    
     #Bookkeeping$dof_iw[[it]]<-dof_iw
     #Bookkeeping$dof_w[[it]]<-dof_w
-    Diff_all[it,]<-Diff
+    Diff_all[it,]<-c(((label_group[,1]!=label_group[,2])*1)[(sqrt(n)*2+1):n],rep(0,sqrt(n)*2))
     rho_all[it,]<-c(rho_alpha,rho_beta,rho_xi)+rnorm(3,0,0.0001)
     
     
@@ -1155,7 +1155,7 @@ Potts_Bayesian_Semi_Multi<-function(Data,net,n,p=3,N,
     #   print(dof_iw)
     #   print(dof_w)
    #    print(c(rho_alpha,rho_beta,rho_xi))
-    image(matrix(Diff,c,c))
+    #image(matrix(Diff,c,c))
     #   # choose=sample(c(0,1),1,TRUE,c(0.5,0.5))
     #   # if(choose==1){
     #   #   

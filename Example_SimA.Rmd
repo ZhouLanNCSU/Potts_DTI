@@ -1,6 +1,8 @@
 ---
 title: "Example Script Simulation (a)"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
 #### Load functions
@@ -71,16 +73,25 @@ result<-Potts_Bayesian_Semi_Multi(Data,net,n,p=3,N,
                                         LU_beta=c(0,20), 
                                         LU_xi=c(0,1),
                                         rho_alpha=1,
-                                        rho_beta=2,
+                                        rho_beta=5,
                                         rho_xi=0.1)
 ```
 
 #### Posterior Mean of $mathcal{I}(h_{0v}\not=h_{1v})$
 ```{r}
-image(matrix(colMeans(result$Diff[3000:8000,]),40,40))
+image(matrix(colMeans(result$Diff[3001:8000,]),40,40))
 ```
 
 #### TPR FPR FDR
+```{r}
+dd=1*(colMeans(result$Diff[3001:8000,])>0.5)
+
+cat("TPR is",mean(dd[which(label_T1==5)]),"\n")
+cat("FPR is",mean(dd[which(label_T1!=5)]),"\n")
+cat("FDR is",mean(dd[which(label_T1!=5)])*(1-0.0625) +0.0625*(1-mean(dd[which(label_T1==5)])),"\n")
+
+
+```
 
 
 
