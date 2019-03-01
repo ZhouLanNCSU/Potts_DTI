@@ -644,6 +644,9 @@ Potts_Bayesian_Semi_Multi<-function(Data,net,n,p=3,N,
   
   eta_k=sapply(1:K,function(k) -k^rho_xi)
   
+  Diff_all=NULL
+  rho_all=NULL
+  
   ###label_sub and label_group is a label index for each subject and group, respectively
   largest_eigen<-function(m){log(det(m))}
   stat.Data_matrix<-sapply(1:N, function(NN) sapply(Data[[NN]],largest_eigen) )
@@ -1131,11 +1134,7 @@ Potts_Bayesian_Semi_Multi<-function(Data,net,n,p=3,N,
     
     
     
-    if(it==1){
-      Diff_all<-list.rbind(lapply(1:iter,function(it) Diff))
-      rho_all<-list.rbind(lapply(1:iter,function(it) c(rho_alpha,rho_beta,rho_xi)))
-    }
-    
+   
     
     #Bookkeeping$label_sub[[it]]<-label_sub
     #Bookkeeping$label_group[[it]]<-label_group
@@ -1144,8 +1143,8 @@ Potts_Bayesian_Semi_Multi<-function(Data,net,n,p=3,N,
     #Bookkeeping$Matrix_list[[it]]<-Matrix_list    
     #Bookkeeping$dof_iw[[it]]<-dof_iw
     #Bookkeeping$dof_w[[it]]<-dof_w
-    Diff_all[it,]<-c(((label_group[,1]!=label_group[,2])*1)[(sqrt(n)*2+1):n],rep(0,sqrt(n)*2))
-    rho_all[it,]<-c(rho_alpha,rho_beta,rho_xi)+rnorm(3,0,0.0001)
+    Diff_all<-rbind(Diff_all,c(label_group[,1]!=label_group[,2])*1)
+    rho_all<-rbind(rho_all,c(rho_alpha,rho_beta,rho_xi)+rnorm(3,0,0.0001))
     
     
     
