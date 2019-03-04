@@ -1,6 +1,7 @@
 ---
 title: "Example Script Simulation (a)"
 output:
+  pdf_document: default
   html_document:
     df_print: paged
 ---
@@ -79,7 +80,7 @@ result<-Potts_Bayesian_Semi_Multi(Data,net,n,p=3,N,
 
 #### Posterior Mean of $mathcal{I}(h_{0v}\not=h_{1v})$
 ```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
-dd=cbind((1*t(matrix(colMeans(result$Diff[101:500,])>0.5,40,40)))[,3:40],rep(0,40),rep(0,40))
+dd=rbind(rep(0,40),rep(0,40),(1*(matrix(colMeans(result$Diff[101:500,])>0.5,40,40)))[3:40,])
 ```
 
 ```{r}
