@@ -59,7 +59,7 @@ plot(g_full,vertex.label=NA, vertex.size=5,vertex.color=as.vector(label_T1),layo
 Data=lapply(1:N, function(i) NULL)
 
 MU_kk=rep(0,1600)
-MU_kk[which(label_T1==2)]=0.25
+MU_kk[which(label_T1==2)]=0.5
 MU_kl=rep(0,1600)
 MU_kl[which(label_T1==2)]=0.25
 
@@ -116,7 +116,7 @@ rho_beta=2
 #### Codes implementation
 ```{r message=FALSE, warning=FALSE, paged.print=FALSE}
 result<-Potts_Bayesian_Semi_Multi(Data,net,n,p=3,N,
-                                        K=10,T_index,iter=500,
+                                        K=10,T_index,iter=10000,
                                         LU_alpha=c(0,20), 
                                         LU_beta=c(0,20), 
                                         LU_xi=c(0,1),
@@ -133,18 +133,6 @@ dd=cbind((1*t(matrix(colMeans(result$Diff[100:500,])>0.5,40,40)))[,3:40],rep(0,4
 ```{r}
 image(matrix(colMeans(result$Diff[100:500,]),40,40))
 ```
-
-#### TPR FPR FDR
-```{r}
-
-
-cat("TPR is",mean(dd[which(label_T1==5)]),"\n")
-cat("FPR is",mean(dd[which(label_T1!=5)]),"\n")
-cat("FDR is",mean(dd[which(label_T1!=5)])*(1-0.0625) +0.0625*(1-mean(dd[which(label_T1==5)])),"\n")
-
-
-```
-
 
 
 

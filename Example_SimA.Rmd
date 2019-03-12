@@ -69,7 +69,7 @@ c=40
 #### Codes implementation
 ```{r message=FALSE, warning=FALSE, paged.print=FALSE}
 result<-Potts_Bayesian_Semi_Multi(Data,net,n,p=3,N,
-                                        K=10,T_index,iter=500,
+                                        K=10,T_index,iter=10000,
                                         LU_alpha=c(0,20), 
                                         LU_beta=c(0,20), 
                                         LU_xi=c(0,1),
@@ -87,21 +87,7 @@ dd=rbind(rep(0,40),rep(0,40),(1*(matrix(colMeans(result$Diff[101:500,])>0.5,40,4
 image(matrix(colMeans(result$Diff[101:500,]),40,40))
 ```
 
-#### TPR FPR FDR
-```{r}
 
 
-cat("TPR is",mean(dd[which(label_T1==5)]),"\n")
-cat("FPR is",mean(dd[which(label_T1!=5)]),"\n")
-cat("FDR is",mean(dd[which(label_T1!=5)])*(1-0.0625) +0.0625*(1-mean(dd[which(label_T1==5)])),"\n")
-
-
-```
-
-
-
-```{r}
-
-```
 
 
